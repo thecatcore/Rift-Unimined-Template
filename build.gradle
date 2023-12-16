@@ -1,15 +1,58 @@
 plugins {
     id 'java'
+    id 'xyz.wagyourtail.unimined' version '1.2.0-SNAPSHOT'
 }
 
 group = 'fr.catcore'
 version = '1.0-SNAPSHOT'
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+unimined.minecraft {
+    version "1.13.2"
+
+    minecraftData.metadataURL = URI.create("https://skyrising.github.io/mc-versions/manifest/f/f/8444b7446a793191e0c496bba07ac41ff17031/1.13.2.json")
+
+    mappings {
+        searge()
+        mcp("snapshot", "20190311-1.13.2")
+    }
+
+    jarMod {
+
+    }
+
+//    merged {
+//        customLibraryFilter {it.contains("patchy") }
+//    }
+
+    runs {
+        config("client") {
+            mainClass = "net.minecraft.launchwrapper.Launch"
+            getArgs().add("--tweakClass")
+            getArgs().add("org.dimdev.riftloader.launch.RiftLoaderClientTweaker")
+        }
+    }
+}
+
 repositories {
+    maven { url 'https://libraries.minecraft.net/' }
+    maven { url = "https://files.minecraftforge.net/maven" }
+    maven { url 'https://www.dimdev.org/maven/' }
+    maven { url = 'https://repo.spongepowered.org/maven/' }
     mavenCentral()
 }
 
 dependencies {
+    implementation('org.spongepowered:mixin:0.7.11-SNAPSHOT') { transitive = false }
+    implementation('net.minecraft:launchwrapper:1.12') { transitive = false }
+    implementation 'org.ow2.asm:asm:6.2'
+    implementation 'org.ow2.asm:asm-commons:6.2'
+    jarMod files("./libs/Rift-Final.jar")
+
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }
