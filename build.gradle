@@ -1,6 +1,9 @@
+import xyz.wagyourtail.unimined.internal.minecraft.MinecraftProvider
+import xyz.wagyourtail.unimined.minecraft.patch.rift.RiftPatch
+
 plugins {
     id 'java'
-    id 'xyz.wagyourtail.unimined' version '1.2.0-SNAPSHOT'
+    id 'xyz.wagyourtail.unimined'
 }
 
 group = 'fr.catcore'
@@ -11,7 +14,7 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-unimined.minecraft {
+unimined.minecraft(sourceSets.main) {
     version "1.13.2"
 
     minecraftData.metadataURL = URI.create("https://skyrising.github.io/mc-versions/manifest/f/f/8444b7446a793191e0c496bba07ac41ff17031/1.13.2.json")
@@ -21,20 +24,24 @@ unimined.minecraft {
         mcp("snapshot", "20190311-1.13.2")
     }
 
-    jarMod {
-
-    }
+//    jarMod {
+//
+//    }
 
 //    merged {
 //        customLibraryFilter {it.contains("patchy") }
 //    }
 
-    runs {
-        config("client") {
-            mainClass = "net.minecraft.launchwrapper.Launch"
-            getArgs().add("--tweakClass")
-            getArgs().add("org.dimdev.riftloader.launch.RiftLoaderClientTweaker")
-        }
+//    runs {
+//        config("client") {
+//            mainClass = "net.minecraft.launchwrapper.Launch"
+//            getArgs().add("--tweakClass")
+//            getArgs().add("org.dimdev.riftloader.launch.RiftLoaderClientTweaker")
+//        }
+//    }
+
+    customPatcher(new RiftPatch(project, this as MinecraftProvider, "Rift")) {
+        loader = files("./libs/Rift-FINAL.jar")
     }
 }
 
@@ -47,11 +54,7 @@ repositories {
 }
 
 dependencies {
-    implementation('org.spongepowered:mixin:0.7.11-SNAPSHOT') { transitive = false }
-    implementation('net.minecraft:launchwrapper:1.12') { transitive = false }
-    implementation 'org.ow2.asm:asm:6.2'
-    implementation 'org.ow2.asm:asm-commons:6.2'
-    jarMod files("./libs/Rift-Final.jar")
+//    jarMod files("./libs/Rift-FINAL.jar")
 
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
