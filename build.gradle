@@ -40,8 +40,8 @@ unimined.minecraft(sourceSets.main) {
 //        }
 //    }
 
-    customPatcher(new RiftPatch(project, this as MinecraftProvider, "Rift")) {
-        loader = files("./libs/Rift-FINAL.jar")
+    customPatcher(new RiftPatch(project as Project, delegate as MinecraftProvider)) {
+        it.loader = files("./libs/Rift-FINAL.jar")
     }
 }
 

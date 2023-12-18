@@ -13,10 +13,8 @@ import xyz.wagyourtail.unimined.util.LazyMutable
 open class RiftPatch(
     project: Project,
     provider: MinecraftProvider,
-    providerName: String,
-    private val accessTransformerMinecraftTransformer: AccessTransformerMinecraftTransformer = AccessTransformerMinecraftTransformer(project, provider, providerName)
-) : AbstractMinecraftTransformer(project, provider, providerName),
-    AccessTransformerPatcher by accessTransformerMinecraftTransformer {
+) : AbstractMinecraftTransformer(project, provider, "Rift") {
+    private val accessTransformerMinecraftTransformer: AccessTransformerMinecraftTransformer = AccessTransformerMinecraftTransformer(project, provider, "Rift")
 
     open var loader by FinalizeOnRead(LazyMutable {
         project.files("libs/Rift-FINAL.jar")
