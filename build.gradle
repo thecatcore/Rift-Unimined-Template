@@ -24,37 +24,21 @@ unimined.minecraft(sourceSets.main) {
         mcp("snapshot", "20190311-1.13.2")
     }
 
-//    jarMod {
-//
-//    }
-
-//    merged {
-//        customLibraryFilter {it.contains("patchy") }
-//    }
-
-//    runs {
-//        config("client") {
-//            mainClass = "net.minecraft.launchwrapper.Launch"
-//            getArgs().add("--tweakClass")
-//            getArgs().add("org.dimdev.riftloader.launch.RiftLoaderClientTweaker")
-//        }
-//    }
-
-    customPatcher(new RiftPatch(project as Project, delegate as MinecraftProvider)) {
-        it.loader = files("./libs/Rift-FINAL.jar")
+    customPatcher(RiftPatch.riftPatch(project as Project, delegate as MinecraftProvider)) {
+        it.loader("FINAL")
     }
 }
 
 repositories {
-    maven { url 'https://libraries.minecraft.net/' }
-    maven { url = "https://files.minecraftforge.net/maven" }
-    maven { url 'https://www.dimdev.org/maven/' }
+    flatDir {
+        dirs project.rootDir.toString() + "/libs"
+    }
     maven { url = 'https://repo.spongepowered.org/maven/' }
     mavenCentral()
 }
 
 dependencies {
-//    jarMod files("./libs/Rift-FINAL.jar")
+    modImplementation("local:Rift-ModList:1.1")
 
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
